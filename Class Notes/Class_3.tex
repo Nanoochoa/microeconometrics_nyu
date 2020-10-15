@@ -1,0 +1,247 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\geometry{a4paper, right=25mm, left=25mm, top=20mm, bottom=20mm}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage[svgnames]{xcolor}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{theorem}
+\usepackage{pdflscape}
+\usepackage{mathtools}
+\usepackage{setspace}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{indentfirst}
+\usepackage[none]{hyphenat}
+\usepackage{amssymb}
+\usepackage{multirow}
+\usepackage{natbib}
+\usepackage[final]{pdfpages}
+
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{
+	 colorlinks   = true,
+     citecolor    = purple,
+	 urlcolor	  = purple,
+	 linkcolor	  = purple
+	 }
+\usepackage{subfig}
+
+\setlength{\parindent}{2.5em}
+\setlength{\parskip}{0.8em}
+\renewcommand{\baselinestretch}{1.7}
+
+\DeclareMathOperator{\E}{\mathbb{E}}
+
+\usepackage{accents}
+\newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{assumption}{Assumption}
+
+\newenvironment{proof}[1][Proof]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{definition}[1][Definition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{example}[1][Example]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{remark}[1][Remark]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+\newcommand{\qed}{\nobreak \ifvmode \relax \else
+      \ifdim\lastskip<1.5em \hskip-\lastskip
+      \hskip1.5em plus0em minus0.5em \fi \nobreak
+      \vrule height0.75em width0.5em depth0.25em\fi}
+
+\onehalfspacing
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{\Large{\textbf{Metrics Class notes}} \\
+Class 3}
+
+\begin{document}
+
+\maketitle
+
+The model 
+\begin{equation*}
+	y_i = e(z_i, \epsilon_i, \theta)
+\end{equation*}
+where $\epsilon \sim f(\cdot | z, \theta)$. This condition can arise from FOCs, for example. We care about the first conditional moment (also about others, but first lets try with this one): 
+
+\begin{equation*}
+	E[y | z, \theta] = \int e(z_i, \epsilon, \theta) f(\epsilon | z, \theta) d \epsilon \equiv m(z,\theta)
+\end{equation*}
+
+The NLLS estimator is
+\begin{equation*}
+	\hat{\theta}_{NLLS} = argmin_{\theta \in \Theta} \frac{1}{n} \sum^n_{i=1} [y_i - m(z, \theta)]^2
+\end{equation*}
+which is valid iff there exist a unique $\theta_0$ is the unique minimizator
+\begin{equation}
+	\theta_0 = argmin E[y-m(z,\theta)]^2
+\end{equation}
+so $\theta_0$ solves 
+\begin{equation*}
+	\mathbb{E} \left[ \frac{\partial m(z,\theta)}{\partial \theta} [y - m(z, \theta)]\right] = 0 
+\end{equation*}
+
+and 
+\begin{equation*}
+	\frac{1}{n} \sum^N \frac{\partial m(z_i,\theta)}{\partial \theta} [y_i - m(z_i, \theta)] = 0 
+\end{equation*}
+
+both are of dimension $k \times 1$. We \textbf{have} to use the k moments for NLLS. Actually you can prove that if we care only about the first conditional moment then this $k$ moments are the most efficient (actually $dm/d\theta$ are the optimal instruments, thats the reason for efficiency). 
+
+As we discussed last classes, $m(z,\theta)$ is not always computable. In that case we go with simulation
+\begin{equation*}
+	m(z,\theta) = \int e(z_i, \epsilon, \theta) f(\epsilon | z, \theta) d \epsilon = \int [e(z_i, \epsilon, \theta) f(\epsilon | z, \theta)/g(\epsilon | z) ] g(\epsilon | z) d \epsilon
+\end{equation*}
+
+which we approximate with 
+\begin{equation*}
+	m^s(z,\theta) = \frac{1}{S} \sum e(z_i, \epsilon, \theta) \frac{f(\epsilon | z, \theta)}{g(\epsilon | z)}
+\end{equation*}
+
+that was last classes. 
+
+\subsection*{GMM}
+
+Suppose we care only about the first moment $E[y | z, \theta]$. We have
+\begin{equation*}
+	\mathbb{E}[y - m(z, \theta_0) | z] = 0
+\end{equation*}
+
+This conditional moment imply plenty of unconditional moments, for example
+\begin{equation*}
+	\mathbb{E}[\psi(z) [y - m(z;\theta_0)]] = 0
+\end{equation*}
+
+and we pick $\psi(z)$. In NLLS it was equal to the optimal instrument (score), but in GMM we can pick another which will be less efficient. So the GMM estimator $\theta_{GMM}$ solve
+
+\begin{equation*}
+	|| \frac{1}{n} \sum^n_{i=1} \psi(z_i) [y_i - m(z_i, \theta) ] || 
+\end{equation*}
+
+Now imagine that we care about the second moment
+\begin{equation*}
+	\mathbb{E}[y^2 | z, \theta] = \int e^2(z, \epsilon, \theta) f(\epsilon | z, \theta) d \epsilon \equiv m_2(z,\theta)
+\end{equation*}
+
+Now we have 
+
+\begin{eqnarray*}
+	\mathbb{E}[ y - m(z;\theta_0) | z] = 0 \Rightarrow  \mathbb{E}[\psi_1(z) [y - m(z;\theta_0)]] = 0\\
+	\mathbb{E}[y^2 - m^2(z;\theta_0) | z] = 0  \Rightarrow  \mathbb{E}[\psi_2(z) [y^2 - m^2(z;\theta_0)]] = 0
+\end{eqnarray*}
+
+and the GMM estimator $\theta_{GMM}$ solves 
+
+\begin{equation*}
+	\begin{cases}
+		\frac{1}{n} \sum^n \psi_1(z_i) [y_i - m(z_i, \theta)]  \\
+		\frac{1}{n} \sum^n \psi_2(z_i) [y_i^2 - m_2(z_i, \theta)] 
+	\end{cases} 
+	= 0 
+\end{equation*}
+Now the question is how do we choose $\psi$ to get the most efficient estimation. 
+
+\subsection*{Pakes and Pollard SMM (1989)}
+
+	They consider 
+	
+	\begin{equation*}
+		\underbrace{G(\theta)}_\text{k unconditional moments} = \int h(x, \theta) d P(x) \equiv \mathbb{E}[h(x, \theta)]
+	\end{equation*}
+	
+	with $G(\theta_0) = 0$. In particular 
+	
+	\begin{equation*}
+		h(x,\theta) = \left[ \begin{matrix}
+			\psi_1 [y - m(z, \theta) ]\\
+			\psi_2 [y^2 - m_2(z, \theta)]
+		\end{matrix} \right]
+	\end{equation*}
+	
+[I GOT LOST HERE...]
+
+The problem that we have is not the integral $\int dP$ because it can be always approximated by the empirical mean. Actually, $\theta_{GMM}$ solves $|| n^{-1} \sum h(x,\theta)||$. The problem is to compute $h(\cdot)$ so we have to simulate. 
+
+Main assumptions:
+\begin{itemize}
+	\item \textbf{Unbiased simulator:} $h(x,\theta) = \int H(x, \zeta, \theta) dP(\zeta|x) $ which is a demanding assumption since it is related with $m$. Lets look at the first moment
+	\begin{eqnarray*}
+		h_1(x,\theta) = & \psi_1(z) [y - m(z, \theta)] \\
+		= & \psi_1(z) y - \psi_1(z) m(z, \theta) \\
+		= & \psi_1(z) y - \psi_1(z) \underbrace{ \int M(x, \zeta, \theta) dP(\zeta | z)}_{= \int e(z,\epsilon, \theta) f(\epsilon | z, \theta) d \epsilon} 
+	\end{eqnarray*}
+
+	Example: this assumtion implies that 
+	\begin{equation*}
+		m(z_i, \theta) \simeq \frac{1}{S} \sum^S M(z_i, \zeta_{is}, \theta) 
+	\end{equation*}
+	where $z_{is}\sim P(\cdot | z)$ iid.  
+	
+	Coming back to the general case, 
+	\begin{equation*}
+		\hat{h}^S(x_i, \theta) = \frac{1}{S} \sum^S H(x_i, \zeta_{is}, \theta)  
+	\end{equation*}
+	where $\zeta_{is} \sim P(\cdot|x_i)$. And SMM estimator $\hat{\theta}^S_{GMM}$ solves
+	\begin{equation*}
+		|| \frac{1}{n} \sum^N \hat{h}^S(x_i, \theta) || = 0
+	\end{equation*}
+	
+	In the example:
+	\begin{eqnarray*}
+		h(x,\theta) = \psi(z) [y - m(z; \theta] \\
+		\hat{h}^S(x,\theta) = \psi(z_i) [y_i - \frac{1}{S} \sum^S [y - H(z_i, \zeta_{is}, \theta)]
+	\end{eqnarray*}
+\end{itemize}
+
+Forget about the whole section 2, do not read. Now we jump to section 3. 
+
+\noindent \textbf{Theorem 3.1} Consistency. They show that $\theta^S_{GMM} \xrightarrow{p} \theta_0$ under some assumptions.
+
+\noindent \textbf{Corollary 3.2} Consistency. They show that $\theta^S_{GMM} \xrightarrow{p} \theta_0$ under stronger assumptions.
+
+\noindent \textbf{Theorem 3.2} Asymptotic normality (to do inference). The asy variance of the estimator is 
+\begin{equation*}
+	\sqrt{n} (\hat{\theta}_n - \theta_0) \rightarrow \mathcal{N}(0, (\Gamma' \Gamma)^{-1} \Gamma' V \Gamma  (\Gamma' \Gamma)^{-1}
+\end{equation*}
+
+[He talked more about the paper now...]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
