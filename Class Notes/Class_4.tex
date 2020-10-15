@@ -1,0 +1,274 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\geometry{a4paper, right=25mm, left=25mm, top=20mm, bottom=20mm}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage[svgnames]{xcolor}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{theorem}
+\usepackage{pdflscape}
+\usepackage{mathtools}
+\usepackage{setspace}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{indentfirst}
+\usepackage[none]{hyphenat}
+\usepackage{amssymb}
+\usepackage{multirow}
+\usepackage{natbib}
+\usepackage[final]{pdfpages}
+
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{
+	 colorlinks   = true,
+     citecolor    = purple,
+	 urlcolor	  = purple,
+	 linkcolor	  = purple
+	 }
+\usepackage{subfig}
+
+\setlength{\parindent}{2.5em}
+\setlength{\parskip}{0.8em}
+\renewcommand{\baselinestretch}{1.7}
+
+\DeclareMathOperator{\E}{\mathbb{E}}
+
+\usepackage{accents}
+\newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{assumption}{Assumption}
+
+\newenvironment{proof}[1][Proof]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{definition}[1][Definition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{example}[1][Example]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{remark}[1][Remark]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+\newcommand{\qed}{\nobreak \ifvmode \relax \else
+      \ifdim\lastskip<1.5em \hskip-\lastskip
+      \hskip1.5em plus0em minus0.5em \fi \nobreak
+      \vrule height0.75em width0.5em depth0.25em\fi}
+
+\onehalfspacing
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{\Large{\textbf{Metrics Class notes}} \\
+Class 4 and 5}
+
+\begin{document}
+
+\maketitle
+
+The model 
+\begin{equation*}
+	y_i = e(z_i, \epsilon_i, \theta)
+\end{equation*}
+where $\epsilon \sim f(\cdot | z, \theta)$ which is the unobserved heterogeneity *often multidimensional). We have many inconditional moments
+
+
+
+\textbf{Simulation-Based Methods}
+
+\begin{equation*}
+	\mathbb{E}[y^h | x, \theta] = \int e^h(x, \epsilon, \theta) f(\epsilon | x, \theta) d \epsilon \equiv m_h(z,\theta)
+\end{equation*}
+
+The conditional moment $E[y^h-m_h(x,\theta_0) | x] = 0$ is intractable because of multidimensionality of $\epsilon$ ($\geq 4$) or $e(\cdot)$ is intractable. But the condition imply many unconditional moment conditions:
+
+\begin{equation*}
+	\mathbb{E}[\psi_h(z) [y^h - m_h(z;\theta_0)]] = 0
+\end{equation*}
+
+If the problem is the dimensionality of $\epsilon$ then we can do the following
+\begin{equation*}
+	E[y^h| x, \theta] 0 \frac{1}{S} \sum^S_{s = 1} e^h(x_i, \epsilon_{is}; \theta) \frac{f()}{g()}  
+\end{equation*}
+
+.
+.
+.
+
+\textbf{Back to Pakes and Pollard}
+
+\begin{equation*}
+	\mathbb{E}[\psi_h(z) [y^h - m_h(z;\theta_0)]] = 0
+\end{equation*}
+
+Stack this $H$ moments in one vector $G(\theta)$
+
+\begin{equation*}
+	G(\theta) = \int h(y,x,\theta) dP(y,x)
+\end{equation*}
+
+since we can not compute $m^h$, $h()$ is intractable. They assume that there exist a function $H$ such that
+
+\begin{equation*}
+	h(y,x;\theta) = \int H(y,x,\epsilon)	 dP(\epsilon | y, x)
+\end{equation*}
+
+If the problem is the dimensionality of $\epsilon$ 
+\begin{equation*}
+	H(y,x,\theta) = \psi_h(x) \left( y^h - e^h(x,\epsilon, \theta) \frac{f(\epsilon | x, \theta)}{g(\epsilon | x, \theta)}\right)
+\end{equation*}
+ 
+ where we used the fact that $\epsilon$ is independent of $y$ so $E[\epsilon | y,x,\theta] = E[\epsilon | x,\theta]$. So we can approximate
+ 
+ \begin{equation*}
+ 	\hat{h}(y_i, x_i, \theta) = \frac{1}{S} \sum^S_{s = 1} H(y_i, x_i, \epsilon) 
+ \end{equation*}
+
+where $\epsilon_{is} \sim P(\cdot| y_i,x_i)$ iid. In the example, 
+
+\begin{equation}
+	\hat{h}(y_i, x_i, \theta) = \psi_h(x_i) \left[ y^h_i - \frac{1}{S} \sum^S_{s = 1} e^h(x_i, \epsilon_{is}, \theta) \frac{f(\epsilon_{is} | x_i, \theta)}{g(\epsilon_{is} | x_i, \theta)} \right]
+\end{equation}
+
+\textbf{SMM}
+
+In GMM the idea is to $|| \frac{1}{n} \sum^N h(y_i,x_i; \theta || \simeq 0$. In SMM the idea es to replace $h$ by $\hat{h}$. 
+
+\section*{Multinomial Choice Model (McFadden 89')}
+
+Individual has $m \geq 2$ alternatives. Vector of covariates $[z_1, ..., z_m]$ and a random vector of individual weights $\alpha_i$. Utility from j-th alternative is $z_j'\alpha$ and chooses it if $z_j' \alpha_i \geq z_k' \alpha_i$ for all $k \neq j$. 
+
+Individual unobserved heterogeneity is $\alpha_i \sim h(\eta, \theta_0)$ with $\eta \sim g(\cdot)$, where $h$ and $g$ are known. 
+
+Multinomial probit is the case where $\alpha_i \sim N_h (\mu, \Sigma) = h(\eta,\mu,\Sigma)$. 
+
+[I got lost here..] he explains why $\alpha$ is generates as a $k \times 1$ vector function  $h(\eta,\theta_0)$ of an r-dimensional random vector $\eta$ with known distribution. [Some discussion about independence that I did not understand ]
+
+so... the utility from individual is
+
+\begin{equation*}
+	u_{ji} = z_j' \alpha_i = z_{1j} \alpha_{1i} + ... + z_h \alpha_{hi}
+\end{equation*}
+
+[He talks about limitations of multinomial logit]
+
+if covariates are stacked in a $m \times k$ matrix $Z$, the choice is specified by the response vector
+\begin{equation*}
+	d = D[Z h(\eta, \theta_0)]
+\end{equation*}
+
+where D maps into $\{0,1\}^m$. Note that $d = y$ and $D = e(x,\epsilon,\theta)$. So let $\pi$
+
+\begin{equation*}
+	E[d|x, \theta] = \pi(z, \theta)
+\end{equation*} 
+
+Why is $\pi$ intractable? 
+
+\begin{equation*}
+	\pi(z, \theta) = \int_{dimK} D[Zh(\eta, \theta_0)] dP(\eta)
+\end{equation*} 
+
+so the problem is the dimensionality. 
+
+\section*{Class 5}
+
+Now we go back to example 4.2 of the paper. 
+
+Individual utility from $j$ to agent $i$ gives
+\begin{equation*}
+	U_{i,j} = z_j' \alpha_i
+\end{equation*}
+
+The Random Utility Model establishes that $i$ choose alternative $j$ iff
+\begin{equation*}
+	U_{i,j} \geq U_{i,j'}, \forall j' \neq j
+\end{equation*}
+
+The unobserved heterogeneity is on $\alpha$
+\begin{equation*}
+	\alpha_i = h(\eta_i , \theta_0) \text{ where } \eta_i \sim g(\cdot)
+\end{equation*}
+with $h(\cdot)$ and $g(\cdot)$ are known. When $\alpha_i \sim \mathcal{N}(\mu_0, \Sigma_0)$ then we are in the Multinomial Probit model. 
+
+Stacking everything in matrices 
+
+\begin{equation*}
+	\left[ \begin{matrix}
+		u_{1i} \\
+		...\\
+		u_{ni}
+	\end{matrix} \right] = Z \beta_i = Zh(\eta_i,\theta_0)
+\end{equation*}
+
+and 
+
+\begin{equation*}
+	d = \left[ \begin{matrix}
+		d_{1i} \\
+		...\\
+		d_{ni}
+	\end{matrix} \right] = D[Zh(\eta_i, \theta_0)]
+\end{equation*}
+
+Last class we said that this is intractable because of the dimensionality. Now we are going to see how we simulate here. We want to look at 
+
+\begin{equation*}
+	\pi(z,\theta) = E[d | z,\theta] = \int_{dim K+M} D[Z h(\eta, \theta_0)] g(\eta) d\eta 
+\end{equation*}
+
+where the dimensionality problem comes from the integral being of dimension $K+M$ (which also kills the option to do MLE). We want to look for the $\theta$ that does
+
+\begin{equation*}
+	E[d|Z,\theta_0] - \pi(Z,\theta_0)] = 0 
+\end{equation*}
+ 
+ We know that this condition implies the unconditional moment
+ \begin{equation*}
+	E[ W(Z) [ d - \pi(Z,\theta_0)]] = 0 
+\end{equation*}
+but now d and Z are random, so we integrate over the measure $dP(d,Z)$
+ \begin{equation*}
+	\underbrace{G(\theta)}_{k \times 1} = \int W(Z,\theta) [ d - \pi(Z,\theta)] dP  
+\end{equation*}
+where $G(\theta_0) = 0$. So now we are going to simulate $\pi$. We need to replace $ \pi(Z_i,\theta)$ by a simulation estimator. For each individual generate $s$ new random variables $\eta_{i1},...,\eta_{is}$ and replace 
+
+\begin{equation*}
+	 \pi(Z_i,\theta) \simeq \hat{\pi}_s(Z_i, \theta) = \frac{1}{s} \sum^s D[Z_i h(\eta, \theta)]
+\end{equation*}
+and we do 
+\begin{equation*}
+	G_n(\theta) = n^{-1} \sum^n_{i = 1} W(Z_i,\theta) [d_i - \hat{\pi}_s(Z_i, \theta)]  
+\end{equation*}
+
+this works for $s = 1$ but the precision of the estimator increase with $s$. 
+
+[I was lost in the variance discussion]
+
+\section*{Indirect inference - Gourieroux et al.}
+
+Consider the dynamic model
+\begin{eqnarray*}
+	y_t = e(y_{t-1}, x_t, u_t, \theta) \\
+	u_t = \phi(u_{t-1}, \epsilon_{t}, \theta), \theta\in \Theta \in \mathbb{R}^{\mathbb{P}}
+\end{eqnarray*}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
